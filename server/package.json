@@ -4,13 +4,34 @@
   "description": "server-side app for MERN",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "start-prod": "npm run build && node ./build/index.js",
+    "build": "npm run clean && npm run build-babel",
+    "clean": "rm -rf build && mkdir build",
+    "build-babel": "babel -d ./build ./src -s",
+    "start-dev": "node --exec babel-node src/index.js",
+    "server": "nodemon --exec babel-node src/index.js",
+    "client": "npm start --prefix ../client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": false,
+    "endOfLine": "auto",
+    "printWidth": 100
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
     "concurrently": "^7.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "faker": "^6.6.6",
+    "fs": "^0.0.1-security",
+    "helmet": "^5.0.2",
     "joi": "^17.6.0",
     "joi-objectid": "^4.0.2",
     "jsonwebtoken": "^8.5.1",
@@ -25,6 +46,13 @@
     "winston": "^3.6.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.8",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@babel/register": "^7.17.7",
     "nodemon": "^2.0.15"
   }
 }
