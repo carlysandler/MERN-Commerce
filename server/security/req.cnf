@@ -1,0 +1,30 @@
+# run this in terminal to generate HTTPs-enabling certificate
+#openssl req -x509 -nodes -days 365 -newkey -keyout server.key -out server.pem -config req.cnf -sha256
+
+# --- no modifications required below ---
+[ req ]
+default_bits = 2048
+default_md = sha256
+prompt = no
+encrypt_key = no
+distinguished_name = dn
+x509_extensions = v3_req
+
+
+[ dn ]
+C = US
+ST = State
+L = Location
+O = Organization Name
+OU = Organizational Unit
+CN = www.localhost.com
+
+[ v3_req ]
+keyUsage = critical, digitalSignature, keyAgreement
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = www.localhost.com
+DNS.2 = localhost.com
+DNS.3 = localhost
