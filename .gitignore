@@ -3,6 +3,7 @@
 package-lock.json
 yarn.lock
 !public/images
-/security/key.pem
 /security/cert.pem
+/security/key.pem
+*.pem
 *.log
