@@ -8,7 +8,9 @@ const bodyParser = require("body-parser")
 const morgan = require("morgan")
 const cors = require("cors")
 const { readFileSync } = require("fs")
-const {connectDB} = require("./config/db")
+const { connectDB } = require("./config/db")
+const { morganMiddleware } = require("./config/morgan");
+const { logger } = require("./config/winston")
 
 const app = express()
 
@@ -26,6 +28,18 @@ connectDB();
 
 // @@todo Startup config scripts
 app.use(cors({ credentials: true }));
+
+
+app.get("/logger", (_, res) => {
+	logger.error("This is an error log");
+  logger.warn("This is a warn log");
+  logger.info("This is a info log");
+  logger.http("This is a http log");
+  logger.debug("This is a debug log");
+	res.send("testing!");
+})
+
+
 // @@todo Use auth and api routes
 
 // Serving static assets middleware
@@ -45,15 +59,27 @@ if (isProduction) {
 
 	// production port
 	const PORT = process.env.PORT || 80 // http protocol port (443 for https - secure & encrypted http)
-	app.listen(PORT, console.log(`Server listening on port ${PORT}`));
+	app.listen(PORT, logger.info(`Server listening on port ${PORT}`));
 }
 else {
-	app.use(morgan()); // dev only logging middleware
+ // dev only logging middleware
+  app.use(morganMiddleware);
 	const PORT = process.env.PORT || 1337 // dev server url
 
-	// @@todo: ADD https option key and cert for facebook-passport
+	// open-ssl certificate: grant access to encrypted https protocol
+	const httpsOptions = {
+		key: readFileSync(path.resolve(__dirname, "../security/key.pem")),
+		cert: readFileSync(path.resolve(__dirname, "../security/cert.pem"))
 
-	const server = https.createServer(app).listen(PORT, () =>
-		console.log(`Server listening on port ${PORT}\n
-								${process.env.SERVER_DEV}`))
-}
+	}
+
+	const server = https.createServer(httpsOptions, app).listen(PORT, (err) => {
+		if (err) {
+			logger.error(err)
+		}
+		logger.info(`
+		Server listening on port ${PORT}\n
+		-------------------------------\n
+		${process.env.SERVER_DEV}`)
+
+})}
