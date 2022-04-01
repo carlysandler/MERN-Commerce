@@ -1,8 +1,11 @@
-*/node_modules/
+
 .env
 package-lock.json
 yarn.lock
 !public/images
-/security/cert.key
 /security/cert.pem
+/security/key.pem
+*.pem
 *.log
+
+*/node_modules/

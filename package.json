@@ -1,0 +1,30 @@
+{
+  "name": "mern-commerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd server && yarn start:dev\" \"cd client && yarn start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlysandler/MERN-Commerce.git"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": false,
+    "endOfLine": "auto",
+    "printWidth": 100
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carlysandler/MERN-Commerce/issues"
+  },
+  "homepage": "https://github.com/carlysandler/MERN-Commerce#readme",
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  }
+}

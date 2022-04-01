@@ -6,9 +6,7 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
 
 	const isProduction = process.env.NODE_ENV === "production";
-	console.log(isProduction)
 	const db = isProduction ? process.env.MONGO_URI_PROD : process.env.MONGO_URI_DEV
-	console.log(db)
 	const options = {
 		useNewUrlParser: true,
 		useUnifiedTopology: true

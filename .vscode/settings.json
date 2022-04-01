@@ -18,9 +18,6 @@
 		"terminal.ansiBrightWhite": "#ffffff",
 		"terminal.ansiYellow": "#ffe100",
 		"terminal.ansiBrightYellow": "#fff68b",
-		"editorWarning.foreground": "#ec0",
-		"activityBar.background": "#4B0E61",
-		"titleBar.activeBackground": "#691488",
-		"titleBar.activeForeground": "#FDF9FE"
+		"editorWarning.foreground": "#ec0"
 	}
 }
