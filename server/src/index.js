@@ -45,6 +45,18 @@ app.get("/logger", (_, res) => {
 // Serving static assets middleware
 app.use('/public',express.static(path.join(__dirname, "..", "public")));
 
+// catch 404 errors (any remaining requests with an extension)
+app.use((req, res, next) => {
+  if (path.extname(req.path).length) {
+    const err = new Error("Not found");
+    res.send(err).status(404);
+    next(err);
+  } else {
+    next();
+  }
+});
+
+
 // Serving static assets if in Production
 const isProduction = process.env.NODE_ENV === "production"
 if (isProduction) {
@@ -64,6 +76,17 @@ if (isProduction) {
 else {
  // dev only logging middleware
   app.use(morganMiddleware);
+
+	// error handling endware
+		app.use((err, req, res, next) => {
+		res.locals.error = err.message
+		logger.error(err.message)
+		logger.error(err.stack)
+		// render the error page
+		res.status(err.status || 500)
+		res.json({ err } || "Internal Server Error.")
+	})
+
 	const PORT = process.env.PORT || 1337 // dev server url
 
 	// open-ssl certificate: grant access to encrypted https protocol

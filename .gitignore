@@ -1,4 +1,4 @@
-*/node_modules/
+
 .env
 package-lock.json
 yarn.lock
@@ -7,3 +7,5 @@ yarn.lock
 /security/key.pem
 *.pem
 *.log
+
+*/node_modules/
