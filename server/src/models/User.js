@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
 		},
 		password: {
 			type: String,
-			minLength: 8,
+			minLength: 6,
 			maxLength: 24,
 			trim: true
 		},
@@ -184,6 +184,16 @@ userSchema.statics = {
 
 		return user.generateToken()
 
+	}
+}
+
+//
+export default async function hashChangePassword(password, saltRounds = 10) {
+	try {
+		return  await bcrypt.hash(password, saltRounds);
+
+	} catch (err) {
+		logger.error(err)
 	}
 }
 
