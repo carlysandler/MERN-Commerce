@@ -5,7 +5,7 @@ const moment = require("moment");
 moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 const mongoose = require("mongoose");
 const { isImageUrl } = require("../utils/validators")
-const { logger } = require("./config/winston");
+const { logger } = require("../config/winston");
 const { assert } = require("joi");
 
 
@@ -17,11 +17,11 @@ const userSchema = new mongoose.Schema(
 		},
 		email: {
 			type: String,
-			required: [true, "Cannot be empty"],
+			required: [true, "Please add an email address"],
 			unique: [true, "Email already exists"],
 			lowercase: true,
 			trim: true,
-			match: [/^\S+@\S+\.\S{2,}$/, "is not a valid email address"],
+			match: [/^\w+([\.-]?\w+)*@\S+([\.]?\w+)?:*(\.\w{2,6})+$/, "Please add a valid email address"],
 			index: true,
 		},
 		provider: {
@@ -29,16 +29,12 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			default: "EMAIL",
 			enum: ["EMAIL", "GOOGLE", "FB", "APPLE"],
-			set: () => {
-				!(this.googleId || this.facebookId || this.appleId) ? "EMAIL" :
-				(this.googleId) ? "GOOGLE" :
-				(this.facebookId) ? "FB" : "APPLE";
-			}
+
 		},
 		password: {
 			type: String,
 			minLength: 6,
-			maxLength: 24,
+			maxLength: 72,
 			trim: true
 		},
 		isVerified: {
@@ -65,22 +61,22 @@ const userSchema = new mongoose.Schema(
 			enum: ["USER", "ADMIN"],
 			default: "USER"
 		},
-		googleId: {
-			type: String,
-			unique: true,
-			parse: true
-		},
-		facebookId: {
-			type: String,
-			unique: true,
-			parse: true
-		},
+		// googleId: {
+		// 	type: String,
+		// 	unique: true,
+		// 	parse: true,
+		// 	index: true,
+		// },
+		// facebookId: {
+		// 	type: String,
+		// 	unique: true,
+		// 	parse: true,
+		// 	index: true,
+		// },
 
 	}, { timestamps: true },
 );
 
-// Create the User model
-const User = mongoose.model('User', userSchema)
 
 /* Virtual properties */
 userSchema.virtual("firstName").get(function () {
@@ -188,7 +184,7 @@ userSchema.statics = {
 }
 
 //
-export default async function hashChangePassword(password, saltRounds = 10) {
+ async function hashChangePassword(password, saltRounds = 10) {
 	try {
 		return  await bcrypt.hash(password, saltRounds);
 
@@ -197,4 +193,8 @@ export default async function hashChangePassword(password, saltRounds = 10) {
 	}
 }
 
-module.exports = { User }
+// Create the User model
+const User = mongoose.model('User', userSchema)
+
+
+module.exports = { User, hashChangePassword }

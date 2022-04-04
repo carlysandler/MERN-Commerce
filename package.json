@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/carlysandler/MERN-Commerce#readme",
   "dependencies": {
-    "concurrently": "^7.0.0"
+    "concurrently": "^7.0.0",
+    "process.argv": "^0.6.0"
   }
 }

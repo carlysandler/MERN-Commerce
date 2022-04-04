@@ -11,6 +11,7 @@ const { readFileSync } = require("fs")
 const { connectDB } = require("./config/db")
 const { morganMiddleware } = require("./config/morgan");
 const { logger } = require("./config/winston")
+const { seed } = require("./utils/seed")
 
 const app = express()
 
@@ -22,9 +23,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
 
-
-// Connect to the database
-connectDB();
 
 // @@todo Startup config scripts
 app.use(cors({ credentials: true }));
@@ -105,4 +103,7 @@ else {
 		-------------------------------\n
 		${process.env.SERVER_DEV}`)
 
-})}
+	})
+
+}
+

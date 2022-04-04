@@ -9,12 +9,13 @@ const connectDB = async () => {
 	const db = isProduction ? process.env.MONGO_URI_PROD : process.env.MONGO_URI_DEV
 	const options = {
 		useNewUrlParser: true,
-		useUnifiedTopology: true
+		useUnifiedTopology: true,
 	}
 	 await mongoose
 			.connect(db, options)
 			.then(() => {
 				console.log('Successfully connected to MongoDB...')
+
 			})
 			.catch((err) => console.error(err))
 
