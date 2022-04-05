@@ -24,20 +24,22 @@ app.use(passport.initialize());
 // @@todo Startup config scripts
 app.use(cors({ credentials: true }));
 
+require('./passport/google')
+
 // Auth and Api Routes
+app.use("/auth", require("./routes/auth/"));
 
-app.use("/auth", require("./routes/auth"));
-
-app.get("/", (req, res) =>
+app.get("/public", (req, res) =>
   res.sendFile(path.join(__dirname, "..", "/public"))
-);
+	)
+
 
 
 app.get("/logger", (_, res) => {
 	logger.error("This is an error log");
   logger.warn("This is a warn log");
   logger.info("This is a info log");
-  logger.http("This is a http log");
+  logger.https("This is a http log");
   logger.debug("This is a debug log");
 	res.send("testing!");
 })
@@ -51,6 +53,7 @@ app.use((req, res, next) => {
   if (path.extname(req.path).length) {
     const err = new Error("Not found");
     res.send(err).status(404);
+		console.log(err.stack)
     next(err);
   } else {
     next();

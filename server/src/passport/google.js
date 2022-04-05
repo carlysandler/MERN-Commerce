@@ -9,7 +9,6 @@ const { isProduction } = require("../index")
 // option params for google strategy
 const callbackUrl = !isProduction ? `${process.env.SERVER_DEV}${process.env.GOOGLE_CB_ROUTE}` : `${process.env.SERVER_PROD}${process.env.GOOGLE_CB_ROUTE}`
 const clientId = process.env.GOOGLE_CLIENT_ID
-console.log(clientId)
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET
 
 

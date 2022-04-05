@@ -1,5 +1,5 @@
 const router = require("express").Router()
-require("../../passport/index");
+
 
 
 router.use('/google', require("./google"));

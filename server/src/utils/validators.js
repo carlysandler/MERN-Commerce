@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 function isImageUrl(url) {
-	const regex = /(?:https?:)\/\/\S+\.(jpg|jpeg|png|gif|svg)$/
+	const regex = /(?:https?:)\/\/\S+\.(jpg|jpeg|png|gif|svg)?:/
 	return regex.test(url);
 }
 
@@ -10,7 +10,7 @@ function validateUser(user) {
 	const schema = {
 		name: Joi.string().required(),
 		email: Joi.string().regex(/^\S+@\S+(\.\S{2,}):?$/).trim().required(),
-		avatar: Joi.string().regex(/^https?:\/\/.*\.(jpg || jpeg || png)$/),
+		avatar: Joi.string().regex(/^https?:\/\/.*\.(jpg || jpeg || png)?:/),
 		password: Joi.string().min(6).max(72).allow(null).allow('') // 3rd party auth. bcrypt.js outputs max 72 bytes per hashed pw
 	}
 

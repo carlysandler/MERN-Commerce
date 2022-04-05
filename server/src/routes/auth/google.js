@@ -28,7 +28,7 @@ router.get("/callback", passport.authenticate("google", {
 			logger.info(token)
 
 			res.cookie('x-auth-cookie', token)
-			res.redirect("/")
+			res.redirect(clientUrl)
 		} catch (err) {
 			console.error(err, err.stack)
 		}
