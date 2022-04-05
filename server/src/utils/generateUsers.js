@@ -23,7 +23,7 @@ const userPromises = [...Array(4).keys()].map((i) => {
 	const user = new User({
 		name: fakeName,
 		email: toEmailCase(fakeName),
-		provider: "EMAIL",
+		provider: "email",
 		password: '1234567890',
 		isVerified: false,
 		avatar: faker.image.avatar(),

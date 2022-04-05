@@ -27,8 +27,8 @@ const userSchema = new mongoose.Schema(
 		provider: {
 			type: String,
 			required: true,
-			default: "EMAIL",
-			enum: ["EMAIL", "GOOGLE", "FB", "APPLE"],
+			default: "email",
+			enum: ["email", "google", "facebook", "apple"]
 
 		},
 		password: {
