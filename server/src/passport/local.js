@@ -5,7 +5,7 @@ const { logger } = require("../config/winston");
 const { User } = require("../models/User")
 const { localLoginSchema, registrationSchema } = require("../utils/validators")
 const Joi = require("Joi")
-const  { toEmailCase } = require("./formatters")
+
 
 
 
@@ -24,7 +24,7 @@ const localAuth = new LocalStrategy(localLoginConnect,
 
 		// otherwise continue with auth
 		try {
-			const user = User.findOne({ email: toEmailCase(email)})
+			const user = User.findOne({ email })
 			if (!user) return done(null, false, {message: "Email doesn't exist"})
 
 			if (!user.comparePassword(password)) return done(null, false, {message: "Incorrect passport"})

@@ -1,5 +1,5 @@
 const passport = require('passport')
-
+const { User } = require("../models/User")
 // require passport-local as middleware
 const requireLocalPassport = (req, res, next) => {
 	passport.authenticate("local", (err, user, info) => {
@@ -24,8 +24,27 @@ const requireLocalPassport = (req, res, next) => {
 
 }
 
+// require local jwt middleware
+const requireTokenMiddleware = async (req, res, next) => {
+	try {
+		const token = req.headers.authorization
+		const user = await User.findByToken(token)
+		req.user = user
+		next()
+
+	} catch (err) {
+		next(err)
+	}
+}
+
 
 // require passport jwt strategy
 
 
 // isAdmin protected routes
+
+
+module.exports = {
+	requireLocalPassport,
+	requireTokenMiddleware
+}

@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const { isImageUrl } = require("../utils/validators")
 const { logger } = require("../config/winston");
 const { assert } = require("joi");
-
+const { toEmailCase, toProperCase, undoSnakeCase } = require("./formatters")
 
 const userSchema = new mongoose.Schema(
 	{
@@ -141,8 +141,10 @@ userSchema.methods = {
 			passwordResetExpires: this.passwordResetExpires,
 			avatar: avatar,
 			role: this.role,
+			isLoggedIn: true,
 			createdAt: this.createdAt,
 			updatedAt: this.updatedAt,
+
 
 		}
 	}
@@ -159,6 +161,7 @@ userSchema.statics = {
 		try {
 			const { id } = await jwt.verify(token, jwtSecret)
 			const user = User.findOne({id: id});
+			// run mongoose validation
 			const error = user.validateSync()
 			if (error) {
 				assert.equal(error.errors["id"].message, "Invalid token")
@@ -184,7 +187,7 @@ userSchema.statics = {
 }
 
 //
- async function hashChangePassword(password, saltRounds = 10) {
+ async function hashPassword(password, saltRounds = 10) {
 	try {
 		return  await bcrypt.hash(password, saltRounds);
 
@@ -197,4 +200,4 @@ userSchema.statics = {
 const User = mongoose.model('User', userSchema)
 
 
-module.exports = { User, hashChangePassword }
+module.exports = { User, hashPassword }

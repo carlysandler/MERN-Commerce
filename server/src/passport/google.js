@@ -39,7 +39,7 @@ const googleAuth = new GoogleStrategy(googleConnect,
 			if (isReturningUser) {
 				return done(null, isReturningUser)
 			} else {
-				const newUser = await new User({
+				const user = await new User({
 					id: profile.id,
 					name: profile.displayName,
 					email: profile.email,
@@ -49,10 +49,10 @@ const googleAuth = new GoogleStrategy(googleConnect,
 					avatar: profile.image
 				}).save()
 
-				done(null, newUser)
+				done(null, user)
 			}
 		} catch (err) {
-			logger.error(err, err.stack``)
+			logger.error(err, err.stack)
 		}
 
 	}
