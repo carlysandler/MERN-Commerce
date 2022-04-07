@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const { isImageUrl } = require("../utils/validators")
 const { logger } = require("../config/winston");
 const { assert } = require("joi");
-const { toEmailCase, toProperCase, undoSnakeCase } = require("./formatters")
+
 
 const userSchema = new mongoose.Schema(
 	{
