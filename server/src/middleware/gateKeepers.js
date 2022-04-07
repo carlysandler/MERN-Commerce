@@ -12,6 +12,7 @@ const requireLocalPassport = (req, res, next) => {
     if (!user) {
       return res.status(400).send({ message: "Invalid email or password." });
     }
+		// handles email validation prior to login
     if (!user.isVerified)
       return res.status(401).send({
         message: "Your account has not been verified. Please activate your account.",

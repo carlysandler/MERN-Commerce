@@ -3,8 +3,8 @@ const passport = require("passport");
 const { logger } = require("../../config/winston");
 const Joi = require("Joi")
 const moment = require("moment");
-const { User, hashPassword } = require("../../models/User")
-const {toEmailCase, toProperCase } = require("../../utils/formatters")
+const { User } = require("../../models/User")
+const {toProperCase } = require("../../utils/formatters")
 
 const {
 	validateUser,
@@ -33,7 +33,9 @@ router.post("/login", requireLocalPassport, (req, res) => {
 		const error = new Error("Incorrect Email or Password");
 		return res.status(401).send({ message: "Authentication failed", error})
 	}
-	res.json({me, jwtToken})
+
+	// check that email has been verified by user before allowing login
+	res.json({me, jwtToken, message: "Login success!"})
 
 })
 
@@ -68,6 +70,7 @@ router.post("/register", async (req, res, next) => {
 
 
 			// @@todo: implement email validation via nodemailer
+
 
 		}
 	} catch (err) {
