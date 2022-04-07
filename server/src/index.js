@@ -5,13 +5,11 @@ const path = require("path")
 const https = require("https")
 const passport = require("passport")
 const bodyParser = require("body-parser")
-const morgan = require("morgan")
 const cors = require("cors")
 const { readFileSync } = require("fs")
-const { connectDB } = require("./config/db")
 const { morganMiddleware } = require("./config/morgan");
 const { logger } = require("./config/winston")
-const { seed } = require("./utils/seed")
+
 
 const app = express()
 
@@ -23,22 +21,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
 
-
 // @@todo Startup config scripts
 app.use(cors({ credentials: true }));
+
+require('./passport/google')
+
+// Auth and Api Routes
+app.use("/auth", require("./routes/auth/"));
+
+app.get("/public", (req, res) =>
+  res.sendFile(path.join(__dirname, "..", "/public"))
+	)
+
 
 
 app.get("/logger", (_, res) => {
 	logger.error("This is an error log");
   logger.warn("This is a warn log");
   logger.info("This is a info log");
-  logger.http("This is a http log");
+  logger.https("This is a http log");
   logger.debug("This is a debug log");
 	res.send("testing!");
 })
 
-
-// @@todo Use auth and api routes
 
 // Serving static assets middleware
 app.use('/public',express.static(path.join(__dirname, "..", "public")));
@@ -48,6 +53,7 @@ app.use((req, res, next) => {
   if (path.extname(req.path).length) {
     const err = new Error("Not found");
     res.send(err).status(404);
+		console.log(err.stack)
     next(err);
   } else {
     next();
@@ -94,7 +100,8 @@ else {
 
 	}
 
-	const server = https.createServer(httpsOptions, app).listen(PORT, (err) => {
+ https.createServer(httpsOptions, app)
+	.listen(PORT, (err) => {
 		if (err) {
 			logger.error(err)
 		}
@@ -107,3 +114,7 @@ else {
 
 }
 
+module.exports = {
+	isProduction,
+
+}

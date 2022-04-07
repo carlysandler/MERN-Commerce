@@ -2,11 +2,8 @@ const { User } = require("../models/User");
 const { userPromises } = require("./generateUsers");
 const { logger } = require("../config/winston");
 require("dotenv").config()
-const { map } = require("lodash");
-const { default: mongoose } = require("mongoose");
 const { connectDB } = require("../config/db")
-// yarn cli for
-const processArgv = require("process.argv")
+
 const DELAY_FUNCTION_TIME = 15000;
 
 

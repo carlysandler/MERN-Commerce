@@ -6,7 +6,7 @@ const { logger } = require("./winston");
 
 morgan.streamOptions = {
 	 // Use http severity for logging requests
-	write: message => logger.http(message)
+	write: message => logger.https(message)
  };
 
 const stream = morgan.streamOptions;
